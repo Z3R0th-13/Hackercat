@@ -1,4 +1,4 @@
-﻿# Hacker Cat full screen
+# Hacker Cat full screen
 # Just a dumb script to bring Hacker Cat full screen with whichever Internet Browser is set as the Default.
 
 # ******************************************************************
@@ -12,7 +12,7 @@
 # ******************************************************************
 
 # Credit to Beefycode for the code for text to speech!
-
+# Will Create a full screen of "Hackercat"
 Function Invoke-Hackercat
 {
     Add-type -AssemblyName System.Windows.Forms
@@ -22,7 +22,7 @@ Function Invoke-Hackercat
 
     $voice = New-Object -ComObject SAPI.SPVoice
     $voice.Rate = 0
- 
+# Will create a PowerShell function for Text to Speech
     function invoke-speech
  {
       param([Parameter(ValueFromPipeline=$true)][string] $say )
@@ -32,10 +32,13 @@ Function Invoke-Hackercat
          $voice.Speak($say) | out-null;    
      }
  }
- 
+ # Make Windows Text to Speech say whatever you want for a loop of whatever you want to change the value to. 
  new-alias -name out-voice -value invoke-speech;
  start-sleep 2
- "You have been hacked! Please call your I A M!" | out-voice
- "Hacker Cat Strikes Again!!!!!" | out-voice
+ for ($i=1; $i -le 10; $i++ ) {
+    "You have been hacked! Please call your I A M!" | out-voice
+    "Hacker Cat Strikes Again!!!!!" | out-voice
+    }
+    
 }
 Invoke-Hackercat
