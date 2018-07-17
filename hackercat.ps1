@@ -16,7 +16,10 @@
 Function Invoke-Hackercat
 {
     Add-type -AssemblyName System.Windows.Forms
-    start-process "http://giphy.com/gifs/cat-hacker-webs-o0vwzuFwCGAFO/fullscreen" -WindowStyle Maximized
+#    start-process "http://giphy.com/gifs/cat-hacker-webs-o0vwzuFwCGAFO/fullscreen" -WindowStyle Maximized
+#    Start-BitsTransfer -Source "http://ENTER_IP_HERE/hax.html" -Destination "hax.html"
+#    Start-BitsTransfer -Source "http://ENTER_IP_HERE/meow.gif" -Destination "meow.gif"
+    start-process "hax.html" -WindowStyle Maximized
     start-sleep 1
     [System.Windows.Forms.SendKeys]::SendWait("{F11}")
 
@@ -26,10 +29,10 @@ Function Invoke-Hackercat
     function invoke-speech
  {
       param([Parameter(ValueFromPipeline=$true)][string] $say )
-  
+
       process
       {
-         $voice.Speak($say) | out-null;    
+         $voice.Speak($say) | out-null;
      }
  }
  # Make Windows Text to Speech say whatever you want for a loop of whatever you want to change the value to. 
@@ -39,6 +42,7 @@ Function Invoke-Hackercat
     "You have been hacked! Please call your I A M!" | out-voice
     "Hacker Cat Strikes Again!!!!!" | out-voice
     }
-    
+
 }
+
 Invoke-Hackercat
