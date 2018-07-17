@@ -16,7 +16,7 @@
 Function Invoke-Hackercat
 {
     Add-type -AssemblyName System.Windows.Forms
-#    start-process "http://giphy.com/gifs/cat-hacker-webs-o0vwzuFwCGAFO/fullscreen" -WindowStyle Maximized
+    start-process "http://giphy.com/gifs/cat-hacker-webs-o0vwzuFwCGAFO/fullscreen" -WindowStyle Maximized
 #    Start-BitsTransfer -Source "http://ENTER_IP_HERE/hax.html" -Destination "hax.html"
 #    Start-BitsTransfer -Source "http://ENTER_IP_HERE/meow.gif" -Destination "meow.gif"
     start-process "hax.html" -WindowStyle Maximized
