@@ -14,19 +14,37 @@
 # Credit to Beefycode for the code for text to speech!
 # Will Create a full screen of "Hackercat"
 
+#Initial choice.
+#Choice 1 will be if you have an active internet connection. It will reach out to Giphy for the GIF.
+#Choice 2 will be if you are hosting your own version of hackercat. 
+Write-Host "How would you like to run Hackercat?
+1) I have an active internet connection
+2) I have my own webserver that I will use"
+
+#Taking in the choices to determine which function to use
+$Choice = Read-Host -Prompt "Select either 1 or 2: "
+
+#If the choice was 2 there are additional things that need to be gathered. 
+if ( $Choice -match "2" ) {  
+$IP = Read-Host -Prompt "What's the IP of your webserver? "
+$Port = Read-Host -Prompt "What port is that on? "
+$RealIP = $IP + ":" #Needed to join the : into the IP and Port. 
+}
+
+#Default location things will get saved to if using choice 2
 $Destination = "~/documents"
 
+#Default array of GIFs to choose from for choice 2
 $Cats = 'meow.gif', 'mrow.gif', 'rage.gif', 'cat.gif'
 
+#Will randomly select a GIF for choice 2
 $Selection = $Cats[ (Get-Random -Maximum ([array]$Cats).count)]
 
-Function Invoke-Hackercat
+#Choice 1. Will grab GIF from Giphy and run. 
+Function Web-Hackercat 
 {
     Add-type -AssemblyName System.Windows.Forms
-#    Start-process "http://giphy.com/gifs/cat-hacker-webs-o0vwzuFwCGAFO/fullscreen" -WindowStyle Maximized #This will just grab the gif from Giphy.
-    Start-BitsTransfer -Source "http://10.33.6.1:8080/hax.html" -Destination "$Destination/hax.html" #This will download hax.html to the target to be ran locally.
-    Start-BitsTransfer -Source "http://10.33.6.1:8080/$Selection" -Destination "$Destination/meow.gif" #This will download meow.gif to the target to be ran locally.
-    start-process "$Destination/hax.html" -WindowStyle Maximized #This will start the process for hax.html to induce hackercat in whichever the default internet browser is.
+    Start-process "http://giphy.com/gifs/cat-hacker-webs-o0vwzuFwCGAFO/fullscreen" -WindowStyle Maximized #This will just grab the gif from Giphy.
     Start-sleep 1 
     [System.Windows.Forms.SendKeys]::SendWait("{F11}") #After waiting, will hit F11 which will fullscreen the browser.
 
@@ -49,10 +67,43 @@ Function Invoke-Hackercat
     "You have been hacked! Please call your I A M!" | out-voice #Change this to whatever you want
     "Hacker Cat Strikes Again!!!!!" | out-voice #Change this to whatever you want
     }
-
 }
 
-Invoke-Hackercat 
+#Choice 2. Will run hackercat over your webserver. 
+Function Invoke-Hackercat
+{
+    
+    Add-type -AssemblyName System.Windows.Forms
+    Start-BitsTransfer -Source "http://$RealIP$Port/hax.html" -Destination "$Destination/hax.html" #This will download hax.html to the target to be ran locally.
+    Start-BitsTransfer -Source "http://$RealIP$Port/$Selection" -Destination "$Destination/meow.gif" #This will download meow.gif to the target to be ran locally.
+    start-process "$Destination/hax.html" -WindowStyle Maximized #This will start the process for hax.html to induce hackercat in whichever the default internet browser is.
+    Start-sleep 1 
+    [System.Windows.Forms.SendKeys]::SendWait("{F11}") #After waiting, will hit F11 which will fullscreen the browser.
+
+    $voice = New-Object -ComObject SAPI.SPVoice
+    $voice.Rate = 0
+# Will create a PowerShell function for Text to Speech
+    function invoke-speech
+ {
+      param([Parameter(ValueFromPipeline=$true)][string] $say )
+
+      process
+      {
+         $voice.Speak($say) | out-null;
+     }
+ }
+
+# Make Windows Text to Speech say whatever you want for a loop of whatever you want to change the value to. 
+ new-alias -name out-voice -value invoke-speech;
+ start-sleep 2
+ for ($i=1; $i -le 10; $i++ ) {
+    "You have been hacked! Please call your I A M!" | out-voice #Change this to whatever you want
+    "Hacker Cat Strikes Again!!!!!" | out-voice #Change this to whatever you want
+    }
 if (Test-Path "$Destination/hax.html") { rm $Destination/hax.html; Write-Host "Deleted hax.html" } else { Write-Host "Unable to delete file :c" } #Will look for files to cleanup
-if (Test-Path "$Destination/meow.gif") { rm $Destination/$Selection; Write-Host "Deleted $Selection" } else { Write-Host "Unable to delete file :c" } #Will look for files to cleanup
+if (Test-Path "$Destination/meow.gif") { rm $Destination/meow.gif; Write-Host "Deleted $Selection" } else { Write-Host "Unable to delete file :c" } #Will look for files to cleanup
+
+}
+if ( $Choice -match "1" ) { Write-Host "Deploying Hackercat via the web!"; Web-Hackercat } Elseif ( $Choice -match "2" ) { Write-Host "Deploying Hackercat with your webserver!"; Invoke-Hackercat }
+
 Write-Host "Hackercat has finished!"
