@@ -29,4 +29,5 @@ Function Hackercat
 	    }
 }
 
+Write-Host "Deploying Hackercat!"
 Hackercat
